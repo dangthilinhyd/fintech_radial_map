@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 980px;
+                 background-color: #0f1115;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#ffd166", "font": {"color": "#eee"}, "id": 0, "label": "Fintech Development", "physics": false, "shape": "dot", "size": 30, "x": 0, "y": 0}, {"color": "#1f77b4", "font": {"color": "#eee"}, "id": 1, "label": "AI in Fintech", "physics": false, "shape": "dot", "size": 22, "x": 420.0, "y": 0.0}, {"color": "#9b59b6", "font": {"color": "#eee"}, "id": 2, "label": "Fintech App \u0026 Software Development", "physics": false, "shape": "dot", "size": 22, "x": 129.78713763747794, "y": 399.4437368439645}, {"color": "#2ecc71", "font": {"color": "#eee"}, "id": 3, "label": "BNPL \u0026 Lending", "physics": false, "shape": "dot", "size": 22, "x": -339.7871376374779, "y": 246.86980596283877}, {"color": "#e67e22", "font": {"color": "#eee"}, "id": 4, "label": "Neobank \u0026 Digital Banking", "physics": false, "shape": "dot", "size": 22, "x": -339.787137637478, "y": -246.86980596283868}, {"color": "#f1c40f", "font": {"color": "#eee"}, "id": 5, "label": "DeFi in Fintech", "physics": false, "shape": "dot", "size": 22, "x": 129.78713763747783, "y": -399.44373684396453}, {"color": "#16a085", "font": {"color": "#eee"}, "id": 6, "label": "Insurtech \u0026 Regtech", "physics": false, "shape": "dot", "size": 22, "x": 210.00000000000006, "y": -363.7306695894642}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 7, "label": "credit scoring", "physics": false, "shape": "dot", "size": 16, "x": 755.8802832586808, "y": -192.47077019842902}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 8, "label": "transaction monitoring", "physics": false, "shape": "dot", "size": 16, "x": 771.2880444556002, "y": -116.25296761741606}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 9, "label": "behavioral biometrics", "physics": false, "shape": "dot", "size": 16, "x": 779.0303985507594, "y": -38.87979081534381}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 10, "label": "device fingerprinting", "physics": false, "shape": "dot", "size": 16, "x": 779.0303985507594, "y": 38.87979081534377}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 11, "label": "risk-based authentication", "physics": false, "shape": "dot", "size": 16, "x": 771.2880444556002, "y": 116.25296761741609}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 12, "label": "model monitoring", "physics": false, "shape": "dot", "size": 16, "x": 755.8802832586808, "y": 192.47077019842897}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 13, "label": "open banking apis", "physics": false, "shape": "dot", "size": 16, "x": 416.63043343344447, "y": 659.4081300204451}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 14, "label": "payment gateway", "physics": false, "shape": "dot", "size": 16, "x": 348.90425568619355, "y": 697.6143779797427}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 15, "label": "banking-as-a-service (baas)", "physics": false, "shape": "dot", "size": 16, "x": 277.71051069399846, "y": 728.8874208340261}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 16, "label": "oauth 2.0 / oidc / fapi", "physics": false, "shape": "dot", "size": 16, "x": 203.75675387974798, "y": 752.9164530333945}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 17, "label": "pci dss", "physics": false, "shape": "dot", "size": 16, "x": 127.7779709038075, "y": 769.4626632603467}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 18, "label": "embedded finance", "physics": false, "shape": "dot", "size": 16, "x": 50.52927304631859, "y": 778.3616078439446}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 19, "label": "credit scoring", "physics": false, "shape": "dot", "size": 16, "x": -490.86990501887306, "y": 606.1738499364374}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 20, "label": "alternative data", "physics": false, "shape": "dot", "size": 16, "x": -541.8335289580177, "y": 561.0850442641481}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 21, "label": "bank transaction data", "physics": false, "shape": "dot", "size": 16, "x": -588.6734725737622, "y": 511.7260426125957}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 22, "label": "decisioning engine", "physics": false, "shape": "dot", "size": 16, "x": -631.0332556124589, "y": 458.47249678812915}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 23, "label": "ekyc", "physics": false, "shape": "dot", "size": 16, "x": -668.5904945476475, "y": 401.7296984298424}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 24, "label": "collections \u0026 recoveries", "physics": false, "shape": "dot", "size": 16, "x": -701.0593561133501, "y": 341.9294944954806}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 25, "label": "bnpl", "physics": false, "shape": "dot", "size": 16, "x": -728.1927326678173, "y": 279.5270006453345}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 26, "label": "core banking", "physics": false, "shape": "dot", "size": 16, "x": -724.6514750892321, "y": -288.5831589871453}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 27, "label": "account aggregation", "physics": false, "shape": "dot", "size": 16, "x": -692.3169154235522, "y": -359.30111135149303}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 28, "label": "payments initiation", "physics": false, "shape": "dot", "size": 16, "x": -653.1017992157283, "y": -426.4481678483077}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 29, "label": "open banking apis", "physics": false, "shape": "dot", "size": 16, "x": -607.3958639087775, "y": -489.3569908630199}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 30, "label": "psd2 / psd3", "physics": false, "shape": "dot", "size": 16, "x": -555.6533556220489, "y": -547.4023642495133}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 31, "label": "fido / passkeys", "physics": false, "shape": "dot", "size": 16, "x": -498.38851464921163, "y": -600.007407009074}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 32, "label": "tokenization", "physics": false, "shape": "dot", "size": 16, "x": 40.82204586949628, "y": -778.9310371085676}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 33, "label": "stablecoins", "physics": false, "shape": "dot", "size": 16, "x": 108.55501874885107, "y": -772.4090936184249}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 34, "label": "custody (digital assets)", "physics": false, "shape": "dot", "size": 16, "x": 175.46182238821464, "y": -760.0086505324834}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 35, "label": "on-chain analytics", "physics": false, "shape": "dot", "size": 16, "x": 241.03325561245885, "y": -741.8240827102198}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 36, "label": "travel rule (crypto)", "physics": false, "shape": "dot", "size": 16, "x": 304.7702802216339, "y": -717.9937856929032}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 37, "label": "on-chain aml", "physics": false, "shape": "dot", "size": 16, "x": 366.18781897299516, "y": -688.6991224299629}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 38, "label": "defi", "physics": false, "shape": "dot", "size": 16, "x": 424.8184473117214, "y": -654.1630429974306}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 39, "label": "aml/cft", "physics": false, "shape": "dot", "size": 16, "x": 194.5640923652258, "y": -755.3441692116885}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 40, "label": "sanctions screening", "physics": false, "shape": "dot", "size": 16, "x": 252.51247480549077, "y": -737.9955623630852}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 41, "label": "pep \u0026 sanctions", "physics": false, "shape": "dot", "size": 16, "x": 308.94221751054266, "y": -716.2085633666136}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 42, "label": "ekyc", "physics": false, "shape": "dot", "size": 16, "x": 363.5139453679807, "y": -690.1142017977928}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 43, "label": "kyb", "physics": false, "shape": "dot", "size": 16, "x": 415.89945758531957, "y": -659.8694122174758}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 44, "label": "open finance frameworks", "physics": false, "shape": "dot", "size": 16, "x": 465.78370152817354, "y": -625.656090348934}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 45, "label": "gdpr", "physics": false, "shape": "dot", "size": 16, "x": 512.86666748387, "y": -587.6799991355751}, {"color": "#e74c3c", "font": {"color": "#eee"}, "id": 46, "label": "pci dss", "physics": false, "shape": "dot", "size": 16, "x": 556.8651929551615, "y": -546.1695312583912}]);
+                  edges = new vis.DataSet([{"color": "#b39ddb", "from": 0, "to": 1, "width": 2.0}, {"color": "#b39ddb", "from": 0, "to": 2, "width": 2.0}, {"color": "#b39ddb", "from": 0, "to": 3, "width": 2.0}, {"color": "#b39ddb", "from": 0, "to": 4, "width": 2.0}, {"color": "#b39ddb", "from": 0, "to": 5, "width": 2.0}, {"color": "#b39ddb", "from": 0, "to": 6, "width": 2.0}, {"color": "#b39ddb", "dashes": true, "from": 1, "to": 7, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 1, "to": 8, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 1, "to": 9, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 1, "to": 10, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 1, "to": 11, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 1, "to": 12, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 2, "to": 13, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 2, "to": 14, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 2, "to": 15, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 2, "to": 16, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 2, "to": 17, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 2, "to": 18, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 3, "to": 19, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 3, "to": 20, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 3, "to": 21, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 3, "to": 22, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 3, "to": 23, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 3, "to": 24, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 3, "to": 25, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 4, "to": 26, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 4, "to": 27, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 4, "to": 28, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 4, "to": 29, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 4, "to": 30, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 4, "to": 31, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 5, "to": 32, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 5, "to": 33, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 5, "to": 34, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 5, "to": 35, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 5, "to": 36, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 5, "to": 37, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 5, "to": 38, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 6, "to": 39, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 6, "to": 40, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 6, "to": 41, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 6, "to": 42, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 6, "to": 43, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 6, "to": 44, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 6, "to": 45, "width": 1.2}, {"color": "#b39ddb", "dashes": true, "from": 6, "to": 46, "width": 1.2}, {"color": "#f5f5f5", "from": 19, "to": 19, "width": 1.4}, {"color": "#f5f5f5", "from": 8, "to": 21, "width": 1.4}, {"color": "#f5f5f5", "from": 29, "to": 29, "width": 1.4}, {"color": "#f5f5f5", "from": 14, "to": 28, "width": 1.4}, {"color": "#f5f5f5", "from": 46, "to": 46, "width": 1.4}, {"color": "#f5f5f5", "from": 18, "to": 44, "width": 1.4}, {"color": "#f5f5f5", "from": 42, "to": 42, "width": 1.4}, {"color": "#f5f5f5", "from": 37, "to": 39, "width": 1.4}, {"color": "#f5f5f5", "from": 40, "to": 41, "width": 1.4}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"interaction": {"navigationButtons": true, "keyboard": true, "hover": true}, "nodes": {"shape": "dot", "borderWidth": 1, "font": {"size": 16, "color": "#ffffff", "strokeWidth": 6, "strokeColor": "#0f1115"}}, "edges": {"smooth": {"enabled": false}, "color": {"inherit": false}}, "physics": {"enabled": false}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
